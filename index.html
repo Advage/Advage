@@ -1,0 +1,371 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <title>定位大师-手机号实时定位</title>
+  <link rel="stylesheet" type="text/css" href="static/css/weui.min.css" />
+  <link rel="stylesheet" type="text/css" href="static/css/jquery-weui.min.css" />
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      background: #f5f5f5;
+    }
+
+    .newPage {
+      display: flex;
+      flex-direction: column;
+      padding-top: 80px;
+      padding-bottom: 70px;
+    }
+
+    .newPage .imgs {
+      width: 100%;
+      pointer-events: none;
+    }
+
+    .page {
+      display: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    .btndiv {
+      width: 100%;
+      position: fixed;
+      background-color: rgba(255, 255, 255, 0.8);
+      bottom: 0;
+    }
+
+    .btn {
+      display: block;
+      width: 94%;
+      height: 45px;
+      line-height: 45px;
+      text-align: center;
+      color: #FFFFFF;
+      border-radius: 30px;
+      border: 0;
+      background-color: #e6322e;
+      font-size: 16px;
+      margin: 10px auto;
+      font-weight: 600;
+      /* animation: myfirst infinite 0.7s; */
+    }
+
+    @keyframes myfirst {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.1);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .wxtip {
+      background: rgba(0, 0, 0, 0.8);
+      text-align: center;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 998;
+      display: block;
+    }
+
+    .wxtip-icon {
+      width: 52px;
+      height: 67px;
+      background: url(static/images/weixin_tip.png) no-repeat;
+      display: block;
+      position: absolute;
+      right: 25px;
+      top: 20px;
+    }
+
+    .wxtip-txt {
+      margin-top: 107px;
+      color: #fff;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .tip {
+      display: flex;
+      flex-wrap: wrap;
+      background-color: #fff;
+      padding: 10px 16px;
+      box-sizing: border-box;
+    }
+
+    .tipText {
+      width: 50%;
+      font-size: 12px;
+      color: #999;
+    }
+
+    .header {
+      width: 100%;
+      position: fixed;
+      background-color: rgba(255, 255, 255, 0.8);
+      top: 0;
+      display: flex;
+      padding: 12px 16px;
+      align-items: center;
+      box-sizing: border-box;
+      height: 80px;
+    }
+
+    .logo {
+      width: 54px;
+      height: 54px;
+    }
+
+    .headerContent {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-left: 10px;
+    }
+
+    .headerTitle {
+      font-size: 17px;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .headerTip {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .headerBtns {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding-right: 3%;
+    }
+
+    .headerBtn {
+      padding: 10px 20px;
+      text-align: center;
+      color: #FFFFFF;
+      border-radius: 24px;
+      background-color: #e6322e;
+      font-weight: bolder;
+      font-size: 16px;
+    }
+    .limit-btn{
+      width: 94%;
+      margin: 0 auto;
+      height: 45px;
+      border-radius: 30px;
+      background: #e6322e;
+      text-align: center;
+      line-height: 45px;
+      color: #fff;
+      font-size: 18px;
+    }
+    .tips{
+      text-align: center;
+      margin-top: 5px;
+    }
+    .tips .content{
+      color: #d1d5d8;
+      font-size: 13px;
+    }
+    .tips .company{
+      margin-top: 15px;
+      font-size: 12px;
+      color: #989898;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="newPage">
+    <div class="header">
+      <img class="logo" src="static/picture/landing_logo.png" alt="">
+      <div class="headerContent">
+        <div class="headerTitle">寻人定位</div>
+        <div class="headerTip">精准定位 守护家人安全</div>
+        <div class="headerTip">大小:4.17MB 版本：V3.1.1</div>
+      </div>
+      <div class="headerBtns">
+        <div class="downApp headerBtn">官方下载</div>
+      </div>
+    </div>
+
+    <img src="static/picture/landing_page_1.jpg" alt="" class="imgs">
+    <img src="static/picture/landing_page_2.png" alt="" class="imgs">
+    <div class="limit">
+    </div>
+    <div class="tip">
+        <div class="tipText" style="width: 70%;">开发者：北京福源广进科技有限公司</div>
+        <div class="tipText" style="text-align: right; width: 30%">应用版本：V3.1.1</div>
+		<div class="tipText">应用涉及权限：<a href="../power.html">查看权限</a></div>
+        <div class="tipText" style="text-align: right">App隐私政策：<a href="../newPrivate.html">查看政策</a></div>
+    </div>
+    <div class="btndiv">
+      <div class="downApp btn">限时免费下载</div>
+    </div>
+
+  </div>
+
+  <div class="wxtip" style="display: none;">
+    <span class="wxtip-icon"></span>
+    <p class="wxtip-txt">点击右上角<br />选择在浏览器中打开</p>
+  </div>
+  <!--<img class="page downApp" src="static/picture/20200629174102.gif" alt="">-->
+  <script src="static/js/bfe7edff4d814b9199a6665622d842e3.js"></script>
+  <script src="static/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="static/js/jquery-weui.min.js" type="text/javascript" charset="utf-8"></script>
+  <script>
+    var channel = getQueryString("c") || 'xmds1'
+    var qhclickid = getQueryString("qhclickid") || null
+    var u = navigator.userAgent;
+    var ua = navigator.userAgent.toLowerCase();
+    var isWeixin = ua.indexOf('micromessenger') != -1;
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+    var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    var iosStore = 'https://wwr.lanzoui.com/xwqx'
+    var andDow = 'http://www.zt222.cn/download/qianxun.apk'
+    var andStore = ''
+    let tempData = new Date().getTime()
+    let eventData = {
+      ip: returnCitySN ? returnCitySN.cip : "",
+      phone: "",
+      udid: "",
+      url: location.href,
+      efrom: "xmds",
+      etype: "view",
+      title: "落地页",
+      mode: "落地页",
+      position: 0,
+      productId: 0,
+      innerMedia: "",
+      outerMedia: navigator.userAgent,
+      referrer: "",
+      channel: channel,
+      networkType: "",
+      longEventTime: tempData,
+      eventTime: tempData,
+      power: "",
+      gyro: "",
+      batteryStatus: "",
+      batteryType: "",
+      refererUrl: "",
+      mac: "",
+      imei: "",
+      idfa: "",
+      androidid: "",
+      productVersion: '',
+      systemVersion: '',
+      systemName: isIOS ? "iOS" : "Android",
+    }
+
+    $('.wxtip').on('click', function () {
+      closeWeixinTip();
+    })
+
+    $('.downApp').on('click', function () {
+      downApp();
+      uploadEvent("click")
+    })
+
+    uploadEvent("view")
+
+    if (qhclickid) {
+      uploadAdvert()
+    }
+
+    function getQueryString(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) return unescape(r[2]);
+      return null;
+    }
+
+    function downApp() {
+      if (isIOS) {
+        // $.toast("ios正在跳转...", "text");
+        top.location.href = iosStore
+        return
+      }
+      if (isWeixin && isAndroid) {
+        $('.wxtip').show();
+        return
+        top.location.href = andStore
+      }
+      if (isAndroid) {
+        top.location.href = andDow
+        return;
+      }
+      top.location.href = andDow
+    }
+
+    function uploadEvent(etype) {
+      eventData.etype = etype
+
+      $.ajax({
+        url: 'https://xmds.siyixunta.cn/company/common/access/upload',
+        type: 'POST',
+        contentType: "application/json;charset=UTF-8;",
+        data: JSON.stringify(eventData),
+        dataType: 'json',
+        success: function (res) {
+
+        }
+      })
+    }
+
+    function uploadAdvert() {
+      var data = {
+        subChannel: channel,
+        clickId: qhclickid,
+        ua: navigator.userAgent
+      }
+
+      $.ajax({
+        url: 'https://xmds.siyixunta.cn/company-check/adt/thirtySixZero',
+        type: 'POST',
+        contentType: "application/json;charset=UTF-8;",
+        data: JSON.stringify(data),
+        dataType: 'json',
+        complete: function (res) {
+          // alert(JSON.stringify(res));
+        }
+      })
+    }
+
+    function closeWeixinTip() {
+      $('.wxtip').hide();
+    }
+
+  // window.onload = function () {
+  //   setTimeout(() => {
+  //     if (channel == 'yixun541') {
+  //       downApp();
+  //       uploadEvent("click")
+  //     }
+  //   }, 2000)
+  // }
+  </script>
+</body>
+
+</html>
